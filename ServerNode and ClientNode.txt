@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class ServerNode {
+    private List<ClientNode> clientNodes;
+
+    public ServerNode() {
+        this.clientNodes = new ArrayList<>();
+    }
+
+    public void registerClient(ClientNode client) {
+        clientNodes.add(client);
+    }
+
+    public void sendMessage(ClientNode sender, String message) {
+        for (ClientNode client : clientNodes) {
+            if (!client.equals(sender)) {
+                client.receiveMessage(sender.getName(), message);
+            }
+        }
+    }
+}
+
+class ClientNode {
+    private String name;
+
+    public ClientNode(String name) {
+        this.name = name;
+    }
+
+    public void send(ServerNode server, String message) {
+        server.sendMessage(this, message);
+    }
+
+    public void receiveMessage(String senderName, String message) {
+        System.out.println(name + " received message from " + senderName + ": " + message);
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+public class StarTopologySimulation {
+    public static void main(String[] args) {
+        ServerNode server = new ServerNode();
+
+        ClientNode client1 = new ClientNode("Client1");
+        ClientNode client2 = new ClientNode("Client2");
+        ClientNode client3 = new ClientNode("Client3");
+
+        server.registerClient(client1);
+        server.registerClient(client2);
+        server.registerClient(client3);
+
+        client1.send(server, "Hello from Client1!");
+        client2.send(server, "Hi from Client2!");
+        client3.send(server, "Hey from Client3!");
+    }
+}

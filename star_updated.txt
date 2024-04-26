@@ -1,0 +1,40 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Star {
+    private ServerNode serverNode;
+    private List<ClientNode> clientNodes;
+
+    public Star() {
+        this.serverNode = new ServerNode();
+        this.clientNodes = new ArrayList<>();
+    }
+
+    public void insertNode(ClientNode client) {
+        clientNodes.add(client);
+        serverNode.registerClient(client);
+    }
+
+    public void deleteNode(ClientNode client) {
+        clientNodes.remove(client);
+    }
+}
+
+public class StarTopologySimulation {
+    public static void main(String[] args) {
+        Star starNetwork = new Star();
+
+        ClientNode client1 = new ClientNode("Client1");
+        ClientNode client2 = new ClientNode("Client2");
+        ClientNode client3 = new ClientNode("Client3");
+
+        starNetwork.insertNode(client1);
+        starNetwork.insertNode(client2);
+        starNetwork.insertNode(client3);
+
+        // Now you have a star network with three client nodes connected to the server node
+
+        // Example of deleting a node
+        starNetwork.deleteNode(client2);
+    }
+}
